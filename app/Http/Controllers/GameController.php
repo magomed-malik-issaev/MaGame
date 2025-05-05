@@ -204,4 +204,33 @@ class GameController extends Controller
 
         return back()->with('success', 'Jeu retiré de votre collection');
     }
+
+    /**
+     * Affiche tous les jeux avec pagination
+     */
+    public function allGames(Request $request)
+    {
+        try {
+            $page = $request->input('page', 1);
+            $pageSize = 20; // Nombre de jeux par page
+
+            $gamesData = $this->rawgApiService->getAllGames($page, $pageSize);
+
+            return view('games.all', [
+                'games' => $gamesData['results'] ?? [],
+                'currentPage' => $page,
+                'nextPage' => isset($gamesData['next']) ? $page + 1 : null,
+                'prevPage' => $page > 1 ? $page - 1 : null,
+                'totalGames' => $gamesData['count'] ?? 0,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Erreur dans GameController@allGames: ' . $e->getMessage());
+
+            return view('debug', [
+                'error' => 'Une erreur est survenue lors de la récupération de tous les jeux',
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
+    }
 }

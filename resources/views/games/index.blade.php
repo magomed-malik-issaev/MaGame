@@ -25,7 +25,7 @@
     <div class="mb-12">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-white">Jeux populaires</h2>
-            <a href="#" class="text-purple-400 hover:text-purple-300 text-sm">Voir tout</a>
+            <a href="{{ route('games.all') }}" class="text-purple-400 hover:text-purple-300 text-sm">Voir tout</a>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

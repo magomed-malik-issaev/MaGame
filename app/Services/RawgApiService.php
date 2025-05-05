@@ -65,6 +65,34 @@ class RawgApiService
         ]);
     }
 
+    /**
+     * Récupère tous les jeux sans filtre particulier
+     *
+     * @param int $page Numéro de page
+     * @param int $pageSize Nombre de jeux par page
+     * @return array
+     */
+    public function getAllGames($page = 1, $pageSize = 20)
+    {
+        $cacheKey = "games_all_page_{$page}_size_{$pageSize}";
+
+        // Utiliser le cache en production
+        if (app()->environment('production')) {
+            return Cache::remember($cacheKey, 60 * 24, function () use ($page, $pageSize) {
+                return $this->makeRequest('/games', [
+                    'page' => $page,
+                    'page_size' => $pageSize
+                ]);
+            });
+        }
+
+        // En développement, on désactive le cache pour faciliter le débogage
+        return $this->makeRequest('/games', [
+            'page' => $page,
+            'page_size' => $pageSize
+        ]);
+    }
+
     public function getGameDetails($id)
     {
         $cacheKey = "game_details_{$id}";

@@ -11,6 +11,7 @@ Route::get('/', [GameController::class, 'index'])->name('home');
 
 // Routes pour les jeux
 Route::get('/games', [GameController::class, 'index'])->name('games.index');
+Route::get('/games/all', [GameController::class, 'allGames'])->name('games.all');
 Route::get('/games/search', [GameController::class, 'search'])->name('games.search');
 Route::get('/games/{id}', [GameController::class, 'show'])->name('games.show');
 

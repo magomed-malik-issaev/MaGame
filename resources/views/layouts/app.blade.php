@@ -33,7 +33,10 @@
                         <!-- Navigation Links -->
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <a href="{{ route('games.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-300 hover:text-white hover:border-purple-500 focus:outline-none focus:text-white focus:border-purple-500 transition duration-150 ease-in-out">
-                                Jeux
+                                Jeux populaires
+                            </a>
+                            <a href="{{ route('games.all') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-300 hover:text-white hover:border-purple-500 focus:outline-none focus:text-white focus:border-purple-500 transition duration-150 ease-in-out">
+                                Catalogue complet
                             </a>
                             @auth
                             <a href="{{ route('games.myGames') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-300 hover:text-white hover:border-purple-500 focus:outline-none focus:text-white focus:border-purple-500 transition duration-150 ease-in-out">
