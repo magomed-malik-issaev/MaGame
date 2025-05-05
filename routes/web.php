@@ -1,7 +1,41 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+// Route d'accueil - liste des jeux
+Route::get('/', [GameController::class, 'index'])->name('home');
+
+// Routes pour les jeux
+Route::get('/games', [GameController::class, 'index'])->name('games.index');
+Route::get('/games/search', [GameController::class, 'search'])->name('games.search');
+Route::get('/games/{id}', [GameController::class, 'show'])->name('games.show');
+
+// Routes protégées par l'authentification
+Route::middleware('auth')->group(function () {
+    // Collection de jeux
+    Route::post('/games/{id}/collection', [GameController::class, 'addToCollection'])->name('games.addToCollection');
+    Route::delete('/games/{id}/collection', [GameController::class, 'removeFromCollection'])->name('games.removeFromCollection');
+
+    // Commentaires
+    Route::post('/games/{game}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
+    // Notes
+    Route::post('/games/{game}/ratings', [RatingController::class, 'store'])->name('ratings.store');
+    Route::delete('/games/{game}/ratings', [RatingController::class, 'destroy'])->name('ratings.destroy');
+
+    // Profil utilisateur
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Ma collection de jeux
+    Route::get('/my-games', [GameController::class, 'myGames'])->name('games.myGames');
 });
+
+require __DIR__ . '/auth.php';
