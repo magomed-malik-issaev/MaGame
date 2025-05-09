@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -88,5 +89,21 @@ class User extends Authenticatable
     public function getRatingFor(Game $game)
     {
         return $this->ratings()->where('game_id', $game->id)->first();
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un administrateur
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Vérifie si l'utilisateur est un utilisateur normal
+     */
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
     }
 }

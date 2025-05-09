@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 // Route d'accueil - liste des jeux
@@ -37,6 +38,12 @@ Route::middleware('auth')->group(function () {
 
     // Ma collection de jeux
     Route::get('/my-games', [GameController::class, 'myGames'])->name('games.myGames');
+});
+
+// Routes administratives
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/comments', [AdminController::class, 'comments'])->name('admin.comments');
+    Route::delete('/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
 });
 
 require __DIR__ . '/auth.php';
