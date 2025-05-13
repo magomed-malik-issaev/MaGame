@@ -11,7 +11,7 @@
             <div class="absolute inset-0 bg-gradient-to-r from-gray-900 to-transparent"></div>
         </div>
         <div class="relative z-10 h-full flex flex-col justify-center px-10">
-            <h1 class="text-4xl font-bold text-white mb-3">Bienvenue sur MaGame</h1>
+            <h1 class="text-4xl font-bold text-white mb-3">Bienvenue sur MyGame</h1>
             <p class="text-xl text-gray-200 mb-6 max-w-2xl">Découvrez, notez et collectionnez vos jeux vidéo préférés avec notre plateforme alimentée par RAWG.</p>
             <div>
                 <a href="{{ route('register') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md transition-colors">

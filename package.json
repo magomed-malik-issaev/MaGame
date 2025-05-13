@@ -1,4 +1,5 @@
 {
+    "name": "MyGame",
     "private": true,
     "type": "module",
     "scripts": {

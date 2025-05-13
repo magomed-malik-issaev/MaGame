@@ -1,7 +1,29 @@
-# MaGame - Plateforme de Gestion de Collection de Jeux Vidéo
+# MyGame - Plateforme de Gestion de Collection de Jeux Vidéo
+
+## Technologies utilisées
+
+### Back-end
+- **Laravel** (framework PHP)
+- **PHP** (>= 8.0)
+- **Composer** (gestionnaire de dépendances PHP)
+- **Laravel Breeze** (authentification simple et rapide)
+
+### Front-end
+- **Blade** (moteur de templates Laravel)
+- **Tailwind CSS** (framework CSS utilitaire)
+- **Alpine.js** (pour les interactions simples côté client, si utilisé)
+- **NPM** (gestionnaire de paquets JS)
+
+### Base de données
+- **MySQL** ou **PostgreSQL** (au choix, selon configuration)
+- **Eloquent ORM** (inclus avec Laravel)
+
+### Outils tiers & API
+- **RAWG API** (pour la récupération des données de jeux vidéo)
+- **Node.js** (pour la compilation des assets front-end)
 
 ## Description
-MaGame est une application web moderne permettant aux utilisateurs de gérer leur collection de jeux vidéo. Développée avec Laravel et Tailwind CSS, elle offre une interface utilisateur intuitive et responsive pour suivre vos jeux favoris, en cours et terminés.
+MyGame est une application web moderne permettant aux utilisateurs de gérer leur collection de jeux vidéo. Développée avec Laravel et Tailwind CSS, elle offre une interface utilisateur intuitive et responsive pour suivre vos jeux favoris, en cours et terminés.
 
 ## Fonctionnalités Principales
 
@@ -50,7 +72,7 @@ MaGame est une application web moderne permettant aux utilisateurs de gérer leu
 1. Cloner le repository :
 ```bash
 git clone [URL_DU_REPO]
-cd MaGame
+cd MyGame
 ```
 
 2. Installer les dépendances PHP :
@@ -107,7 +129,7 @@ RAWG_API_KEY=votre_clé_api
 ## Structure du Projet
 
 ```
-MaGame/
+MyGame/
 ├── app/
 │   ├── Http/
 │   │   ├── Controllers/

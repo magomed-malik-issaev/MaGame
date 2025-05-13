@@ -46,4 +46,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::delete('/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
 });
 
+// Page À propos
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 require __DIR__ . '/auth.php';
