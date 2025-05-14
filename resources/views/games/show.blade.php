@@ -72,13 +72,13 @@
 
             <!-- Commentaires -->
             <div class="bg-gray-800 rounded-lg p-6">
-                <h2 class="text-xl font-bold text-white mb-4">Commentaires ({{ $comments->count() }})</h2>
+                <h2 id="comments-title" class="text-xl font-bold text-white mb-4">Commentaires ({{ $comments->count() }})</h2>
 
                 @auth
-                <form action="{{ route('comments.store', $game->id) }}" method="POST" class="mb-6">
+                <form id="comment-form" data-game-id="{{ $game->id }}" class="mb-6">
                     @csrf
                     <div class="mb-4">
-                        <textarea name="content" rows="3" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Partagez votre avis sur ce jeu..."></textarea>
+                        <textarea id="comment-content" name="content" rows="3" class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Partagez votre avis sur ce jeu..."></textarea>
                     </div>
                     <div class="flex justify-end">
                         <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md transition-colors">
@@ -95,9 +95,9 @@
                 </div>
                 @endauth
 
-                <div class="space-y-4">
+                <div id="comments-list" class="space-y-4">
                     @forelse($comments as $comment)
-                    <div class="bg-gray-700 rounded-lg p-4">
+                    <div id="comment-{{ $comment->id }}" class="comment-item bg-gray-700 rounded-lg p-4">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex items-center">
                                 <div class="font-medium text-white">{{ $comment->user->name }}</div>
@@ -105,28 +105,24 @@
                             </div>
 
                             @if(Auth::check() && Auth::id() == $comment->user_id)
-                            <div class="flex space-x-2">
-                                <button class="text-gray-400 hover:text-white edit-comment" data-id="{{ $comment->id }}" data-content="{{ $comment->content }}">
+                            <div class="comment-actions flex space-x-2">
+                                <button class="text-gray-400 hover:text-white edit-comment-btn" data-id="{{ $comment->id }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                     </svg>
                                 </button>
-                                <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-gray-400 hover:text-red-500">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </form>
+                                <button class="text-gray-400 hover:text-red-500 delete-comment-btn" data-id="{{ $comment->id }}">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
                             </div>
                             @endif
                         </div>
-                        <p class="text-gray-200">{{ $comment->content }}</p>
+                        <p class="comment-content text-gray-200">{{ $comment->content }}</p>
                     </div>
                     @empty
-                    <div class="text-center text-gray-400">
+                    <div class="text-center text-gray-400 no-comments-message">
                         Aucun commentaire pour le moment. Soyez le premier à donner votre avis !
                     </div>
                     @endforelse
@@ -145,18 +141,33 @@
                     <!-- Notation -->
                     <div class="mb-4">
                         <h3 class="text-gray-300 text-sm mb-2">Noter ce jeu :</h3>
-                        <form action="{{ route('ratings.store', $game->id) }}" method="POST" class="flex items-center">
-                            @csrf
+                        <div class="flex items-center">
                             <div class="flex space-x-1">
                                 @for($i = 1; $i <= 5; $i++)
-                                    <button type="submit" name="rating" value="{{ $i }}" class="focus:outline-none">
+                                    <button type="button" class="rating-star focus:outline-none" data-game-id="{{ $game->id }}" data-rating="{{ $i }}">
                                     <svg class="w-8 h-8 {{ $userRating && $userRating->rating >= $i ? 'text-yellow-400' : 'text-gray-500' }}" fill="currentColor" viewBox="0 0 20 20">
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                     </svg>
                                     </button>
                                     @endfor
                             </div>
-                        </form>
+                            @if($userRating)
+                            <button id="delete-rating-btn" data-game-id="{{ $game->id }}" class="ml-2 text-xs text-gray-400 hover:text-red-500">
+                                Supprimer ma note
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Note moyenne -->
+                    <div class="flex items-center mb-4">
+                        <span class="text-gray-300 text-sm mr-2">Note moyenne :</span>
+                        <div class="flex items-center bg-gray-700 px-2 py-1 rounded">
+                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                            </svg>
+                            <span id="average-rating" class="ml-1 text-sm text-white">{{ $game->rating }}</span>
+                        </div>
                     </div>
 
                     <!-- Ajout à la collection -->

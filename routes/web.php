@@ -27,9 +27,18 @@ Route::middleware('auth')->group(function () {
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
+    // Commentaires Ajax
+    Route::post('/api/games/{game}/comments', [CommentController::class, 'storeAjax'])->name('api.comments.store');
+    Route::put('/api/comments/{comment}', [CommentController::class, 'updateAjax'])->name('api.comments.update');
+    Route::delete('/api/comments/{comment}', [CommentController::class, 'destroyAjax'])->name('api.comments.destroy');
+
     // Notes
     Route::post('/games/{game}/ratings', [RatingController::class, 'store'])->name('ratings.store');
     Route::delete('/games/{game}/ratings', [RatingController::class, 'destroy'])->name('ratings.destroy');
+
+    // Notes Ajax
+    Route::post('/api/games/{game}/ratings', [RatingController::class, 'storeAjax'])->name('api.ratings.store');
+    Route::delete('/api/games/{game}/ratings', [RatingController::class, 'destroyAjax'])->name('api.ratings.destroy');
 
     // Profil utilisateur
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

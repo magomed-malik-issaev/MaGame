@@ -26,7 +26,7 @@
                         <!-- Logo -->
                         <div class="shrink-0 flex items-center">
                             <a href="{{ route('home') }}" class="flex items-center">
-                                <img src="{{ asset('images/logomygame.png') }}" alt="MyGame Logo" class="h-10">
+                                <img src="{{ asset('images/logomygame.png') }}" style="border-radius: 13%;" alt="MyGame Logo" class="h-10">
                             </a>
                         </div>
 
