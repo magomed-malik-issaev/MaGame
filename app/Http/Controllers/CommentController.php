@@ -6,16 +6,21 @@ use App\Models\Comment;
 use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
-class CommentController extends Controller
+class CommentController extends BaseController
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     /**
      * Create a new controller instance.
      */
     public function __construct()
     {
-        // Appliquer le middleware auth à toutes les méthodes sauf index et show
-        // $this->middleware('auth');
+        // Appliquer le middleware auth à toutes les méthodes
+        $this->middleware('auth');
     }
 
     /**
@@ -43,8 +48,8 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        // Vérifier que l'utilisateur est bien le propriétaire du commentaire
-        if ($comment->user_id !== Auth::id()) {
+        // Vérifier que l'utilisateur est soit le propriétaire du commentaire, soit un administrateur
+        if ($comment->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403, 'Vous n\'êtes pas autorisé à modifier ce commentaire');
         }
 
@@ -64,8 +69,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        // Vérifier que l'utilisateur est bien le propriétaire du commentaire
-        if ($comment->user_id !== Auth::id()) {
+        // Vérifier que l'utilisateur est soit le propriétaire du commentaire, soit un administrateur
+        if ($comment->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403, 'Vous n\'êtes pas autorisé à supprimer ce commentaire');
         }
 
@@ -99,7 +104,8 @@ class CommentController extends Controller
             'message' => 'Commentaire ajouté avec succès',
             'comment' => $comment,
             'user' => [
-                'name' => $comment->user->name
+                'name' => $comment->user->name,
+                'isAdmin' => $comment->user->isAdmin()
             ],
             'created_at_formatted' => $comment->created_at->diffForHumans()
         ]);
@@ -110,8 +116,8 @@ class CommentController extends Controller
      */
     public function updateAjax(Request $request, Comment $comment)
     {
-        // Vérifier que l'utilisateur est bien le propriétaire du commentaire
-        if ($comment->user_id !== Auth::id()) {
+        // Vérifier que l'utilisateur est soit le propriétaire du commentaire, soit un administrateur
+        if ($comment->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             return response()->json([
                 'success' => false,
                 'message' => 'Vous n\'êtes pas autorisé à modifier ce commentaire'
@@ -138,8 +144,8 @@ class CommentController extends Controller
      */
     public function destroyAjax(Comment $comment)
     {
-        // Vérifier que l'utilisateur est bien le propriétaire du commentaire
-        if ($comment->user_id !== Auth::id()) {
+        // Vérifier que l'utilisateur est soit le propriétaire du commentaire, soit un administrateur
+        if ($comment->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             return response()->json([
                 'success' => false,
                 'message' => 'Vous n\'êtes pas autorisé à supprimer ce commentaire'

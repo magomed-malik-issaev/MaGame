@@ -281,10 +281,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const commentElement = document.createElement('div');
         commentElement.id = `comment-${data.comment.id}`;
         commentElement.className = 'comment-item bg-gray-700 rounded-lg p-4 mb-4';
+
+        // Vérifier si l'utilisateur est admin
+        const adminBadge = data.user.isAdmin ?
+            `<span class="ml-2 px-2 py-0.5 bg-red-600 text-white text-xs font-medium rounded-full">Admin</span>` : '';
+
         commentElement.innerHTML = `
             <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center">
                     <div class="font-medium text-white">${data.user.name}</div>
+                    ${adminBadge}
                     <span class="text-xs text-gray-400 ml-2">${data.created_at_formatted}</span>
                 </div>
                 <div class="comment-actions flex space-x-2">

@@ -45,7 +45,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <form action="{{ route('admin.comments.delete', $comment) }}" method="POST" class="inline">
                                             @csrf
-                                            @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')">
                                                 Supprimer
                                             </button>

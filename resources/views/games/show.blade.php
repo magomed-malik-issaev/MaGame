@@ -101,10 +101,13 @@
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex items-center">
                                 <div class="font-medium text-white">{{ $comment->user->name }}</div>
+                                @if($comment->user->isAdmin())
+                                <span class="ml-2 px-2 py-0.5 bg-red-600 text-white text-xs font-medium rounded-full">Admin</span>
+                                @endif
                                 <span class="text-xs text-gray-400 ml-2">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
 
-                            @if(Auth::check() && Auth::id() == $comment->user_id)
+                            @if(Auth::check() && (Auth::id() == $comment->user_id || Auth::user()->isAdmin()))
                             <div class="comment-actions flex space-x-2">
                                 <button class="text-gray-400 hover:text-white edit-comment-btn" data-id="{{ $comment->id }}">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

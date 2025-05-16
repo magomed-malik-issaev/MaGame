@@ -47,12 +47,12 @@ Route::middleware('auth')->group(function () {
 
     // Ma collection de jeux
     Route::get('/my-games', [GameController::class, 'myGames'])->name('games.myGames');
-});
 
-// Routes administratives
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/comments', [AdminController::class, 'comments'])->name('admin.comments');
-    Route::delete('/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+    // Routes admin
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/comments', [AdminController::class, 'comments'])->name('admin.comments');
+        Route::post('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+    });
 });
 
 // Page À propos
