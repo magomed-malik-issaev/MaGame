@@ -12,6 +12,27 @@
     <!-- DEBUG INFO -->
     <div class="bg-gray-900 p-4 mb-4 text-white rounded">
         Nombre de genres disponibles : {{ isset($genres) ? count($genres) : 0 }}
+
+        @if(isset($apiStats))
+        <div class="mt-2 text-sm">
+            <div class="flex items-center">
+                <span class="mr-2">Utilisation API aujourd'hui:</span>
+                <div class="w-32 bg-gray-700 rounded-full h-2.5">
+                    <div class="h-2.5 rounded-full 
+                        @if($apiStats['percentage'] < 50) 
+                            bg-green-500
+                        @elseif($apiStats['percentage'] < 80)
+                            bg-yellow-500
+                        @else
+                            bg-red-500
+                        @endif"
+                        style="width: {{ min($apiStats['percentage'], 100) }}%">
+                    </div>
+                </div>
+                <span class="ml-2">{{ $apiStats['count'] }}/{{ $apiStats['limit'] }}</span>
+            </div>
+        </div>
+        @endif
     </div>
 
     <!-- Section filtres -->

@@ -211,6 +211,9 @@ class GameController extends Controller
     public function allGames(Request $request)
     {
         try {
+            // Ajout d'un indicateur de limite d'API dans la vue
+            $apiStats = $this->rawgApiService->getRequestStats();
+
             $page = $request->input('page', 1);
             $pageSize = 20; // Nombre de jeux par page
 
@@ -259,6 +262,7 @@ class GameController extends Controller
                 'selectedPlatforms' => $request->platforms ?? [],
                 'selectedDates' => $request->dates ?? '',
                 'selectedOrdering' => $request->ordering ?? '',
+                'apiStats' => $apiStats,
             ]);
         } catch (\Exception $e) {
             Log::error('Erreur dans GameController@allGames: ' . $e->getMessage());
@@ -269,5 +273,17 @@ class GameController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
         }
+    }
+
+    /**
+     * Affiche l'état d'utilisation de l'API RAWG
+     */
+    public function apiStatus()
+    {
+        $apiStats = $this->rawgApiService->getRequestStats();
+
+        return view('admin.api-status', [
+            'apiStats' => $apiStats
+        ]);
     }
 }
