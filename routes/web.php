@@ -55,6 +55,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
         Route::post('/admin/users/{user}/promote', [AdminController::class, 'promoteUser'])->name('admin.users.promote');
         Route::post('/admin/users/{user}/demote', [AdminController::class, 'demoteUser'])->name('admin.users.demote');
+
+        // Statistiques de l'API
+        Route::get('/admin/api-status', [GameController::class, 'apiStatus'])->name('admin.api-status');
     });
 });
 
