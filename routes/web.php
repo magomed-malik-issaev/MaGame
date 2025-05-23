@@ -52,6 +52,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('/admin/comments', [AdminController::class, 'comments'])->name('admin.comments');
         Route::post('/admin/comments/{comment}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+        Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+        Route::post('/admin/users/{user}/promote', [AdminController::class, 'promoteUser'])->name('admin.users.promote');
+        Route::post('/admin/users/{user}/demote', [AdminController::class, 'demoteUser'])->name('admin.users.demote');
     });
 });
 

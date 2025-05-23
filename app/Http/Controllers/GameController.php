@@ -214,7 +214,39 @@ class GameController extends Controller
             $page = $request->input('page', 1);
             $pageSize = 20; // Nombre de jeux par page
 
-            $gamesData = $this->rawgApiService->getAllGames($page, $pageSize);
+            // Récupérer les filtres
+            $filters = [];
+
+            // Filtre par genres
+            if ($request->has('genres') && !empty($request->genres)) {
+                $filters['genres'] = $request->genres;
+            }
+
+            // Filtre par plateformes
+            if ($request->has('platforms') && !empty($request->platforms)) {
+                $filters['platforms'] = $request->platforms;
+            }
+
+            // Filtre par date de sortie
+            if ($request->has('dates') && !empty($request->dates)) {
+                $filters['dates'] = $request->dates;
+            }
+
+            // Tri
+            if ($request->has('ordering') && !empty($request->ordering)) {
+                $filters['ordering'] = $request->ordering;
+            }
+
+            // Récupérer les genres pour le filtre
+            $genres = $this->rawgApiService->getGenres();
+
+            // Debug - Log les genres récupérés
+            Log::info('Genres récupérés pour les filtres : ', [
+                'count' => isset($genres['results']) ? count($genres['results']) : 0,
+                'genres' => $genres['results'] ?? []
+            ]);
+
+            $gamesData = $this->rawgApiService->getAllGames($page, $pageSize, $filters);
 
             return view('games.all', [
                 'games' => $gamesData['results'] ?? [],
@@ -222,6 +254,11 @@ class GameController extends Controller
                 'nextPage' => isset($gamesData['next']) ? $page + 1 : null,
                 'prevPage' => $page > 1 ? $page - 1 : null,
                 'totalGames' => $gamesData['count'] ?? 0,
+                'genres' => $genres['results'] ?? [],
+                'selectedGenres' => $request->genres ?? [],
+                'selectedPlatforms' => $request->platforms ?? [],
+                'selectedDates' => $request->dates ?? '',
+                'selectedOrdering' => $request->ordering ?? '',
             ]);
         } catch (\Exception $e) {
             Log::error('Erreur dans GameController@allGames: ' . $e->getMessage());

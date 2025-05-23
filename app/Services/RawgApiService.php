@@ -70,27 +70,35 @@ class RawgApiService
      *
      * @param int $page Numéro de page
      * @param int $pageSize Nombre de jeux par page
+     * @param array $filters Filtres supplémentaires (genres, platforms, etc.)
      * @return array
      */
-    public function getAllGames($page = 1, $pageSize = 20)
+    public function getAllGames($page = 1, $pageSize = 20, $filters = [])
     {
-        $cacheKey = "games_all_page_{$page}_size_{$pageSize}";
+        // Construction de la clé de cache incluant les filtres
+        $filterKey = !empty($filters) ? md5(json_encode($filters)) : 'no_filters';
+        $cacheKey = "games_all_page_{$page}_size_{$pageSize}_filters_{$filterKey}";
+
+        // Paramètres de base
+        $params = [
+            'page' => $page,
+            'page_size' => $pageSize
+        ];
+
+        // Fusion des filtres supplémentaires
+        if (!empty($filters)) {
+            $params = array_merge($params, $filters);
+        }
 
         // Utiliser le cache en production
         if (app()->environment('production')) {
-            return Cache::remember($cacheKey, 60 * 24, function () use ($page, $pageSize) {
-                return $this->makeRequest('/games', [
-                    'page' => $page,
-                    'page_size' => $pageSize
-                ]);
+            return Cache::remember($cacheKey, 60 * 24, function () use ($params) {
+                return $this->makeRequest('/games', $params);
             });
         }
 
         // En développement, on désactive le cache pour faciliter le débogage
-        return $this->makeRequest('/games', [
-            'page' => $page,
-            'page_size' => $pageSize
-        ]);
+        return $this->makeRequest('/games', $params);
     }
 
     public function getGameDetails($id)
@@ -115,6 +123,26 @@ class RawgApiService
             'page' => $page,
             'page_size' => $pageSize
         ]);
+    }
+
+    /**
+     * Récupère la liste des genres disponibles
+     * 
+     * @return array
+     */
+    public function getGenres()
+    {
+        $cacheKey = "game_genres";
+
+        // Utiliser le cache en production
+        if (app()->environment('production')) {
+            return Cache::remember($cacheKey, 60 * 24 * 7, function () {
+                return $this->makeRequest("/genres");
+            });
+        }
+
+        // En développement, on désactive le cache pour faciliter le débogage
+        return $this->makeRequest("/genres");
     }
 
     protected function makeRequest($endpoint, $params = [])

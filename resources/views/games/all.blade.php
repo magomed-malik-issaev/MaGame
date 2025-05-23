@@ -9,6 +9,66 @@
         <div class="text-gray-400">{{ $totalGames }} jeux au total</div>
     </div>
 
+    <!-- DEBUG INFO -->
+    <div class="bg-gray-900 p-4 mb-4 text-white rounded">
+        Nombre de genres disponibles : {{ isset($genres) ? count($genres) : 0 }}
+    </div>
+
+    <!-- Section filtres -->
+    <div class="bg-gray-800 p-4 rounded-lg mb-8">
+        <form action="{{ route('games.all') }}" method="GET" class="space-y-4">
+            <div class="flex flex-wrap -mx-2">
+                <!-- Filtre par genre - Simplifié avec options statiques -->
+                <div class="px-2 w-full md:w-1/3 mb-4">
+                    <label for="genres" class="block text-sm font-medium text-gray-300 mb-1">Genres</label>
+                    <select name="genres" id="genres" class="bg-gray-700 text-white rounded-md w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Tous les genres</option>
+                        <option value="4">Action</option>
+                        <option value="51">Indie</option>
+                        <option value="3">Adventure</option>
+                        <option value="5">RPG</option>
+                        <option value="2">Shooter</option>
+                        <option value="10">Strategy</option>
+                    </select>
+                </div>
+
+                <!-- Filtre par date -->
+                <div class="px-2 w-full md:w-1/3 mb-4">
+                    <label for="dates" class="block text-sm font-medium text-gray-300 mb-1">Période de sortie</label>
+                    <select name="dates" id="dates" class="bg-gray-700 text-white rounded-md w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="">Toutes les dates</option>
+                        <option value="2023-01-01,2023-12-31" {{ isset($selectedDates) && $selectedDates == '2023-01-01,2023-12-31' ? 'selected' : '' }}>2023</option>
+                        <option value="2022-01-01,2022-12-31" {{ isset($selectedDates) && $selectedDates == '2022-01-01,2022-12-31' ? 'selected' : '' }}>2022</option>
+                        <option value="2021-01-01,2021-12-31" {{ isset($selectedDates) && $selectedDates == '2021-01-01,2021-12-31' ? 'selected' : '' }}>2021</option>
+                        <option value="2020-01-01,2020-12-31" {{ isset($selectedDates) && $selectedDates == '2020-01-01,2020-12-31' ? 'selected' : '' }}>2020</option>
+                        <option value="2015-01-01,2019-12-31" {{ isset($selectedDates) && $selectedDates == '2015-01-01,2019-12-31' ? 'selected' : '' }}>2015-2019</option>
+                        <option value="2010-01-01,2014-12-31" {{ isset($selectedDates) && $selectedDates == '2010-01-01,2014-12-31' ? 'selected' : '' }}>2010-2014</option>
+                        <option value="2000-01-01,2009-12-31" {{ isset($selectedDates) && $selectedDates == '2000-01-01,2009-12-31' ? 'selected' : '' }}>2000-2009</option>
+                        <option value="1990-01-01,1999-12-31" {{ isset($selectedDates) && $selectedDates == '1990-01-01,1999-12-31' ? 'selected' : '' }}>1990-1999</option>
+                    </select>
+                </div>
+
+                <!-- Filtre par tri -->
+                <div class="px-2 w-full md:w-1/3 mb-4">
+                    <label for="ordering" class="block text-sm font-medium text-gray-300 mb-1">Trier par</label>
+                    <select name="ordering" id="ordering" class="bg-gray-700 text-white rounded-md w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option value="-added" {{ isset($selectedOrdering) && $selectedOrdering == '-added' ? 'selected' : '' }}>Popularité</option>
+                        <option value="-released" {{ isset($selectedOrdering) && $selectedOrdering == '-released' ? 'selected' : '' }}>Date de sortie</option>
+                        <option value="name" {{ isset($selectedOrdering) && $selectedOrdering == 'name' ? 'selected' : '' }}>Nom (A-Z)</option>
+                        <option value="-name" {{ isset($selectedOrdering) && $selectedOrdering == '-name' ? 'selected' : '' }}>Nom (Z-A)</option>
+                        <option value="-rating" {{ isset($selectedOrdering) && $selectedOrdering == '-rating' ? 'selected' : '' }}>Note</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors">
+                    Filtrer
+                </button>
+            </div>
+        </form>
+    </div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
         @foreach($games as $game)
         <div class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -71,7 +131,7 @@
     <div class="flex justify-between items-center py-6 border-t border-gray-700">
         <div>
             @if($prevPage)
-            <a href="{{ route('games.all', ['page' => $prevPage]) }}" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
+            <a href="{{ route('games.all', array_merge(['page' => $prevPage], request()->only(['genres', 'dates', 'ordering']))) }}" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
                 &larr; Page précédente
             </a>
             @else
@@ -87,7 +147,7 @@
 
         <div>
             @if($nextPage)
-            <a href="{{ route('games.all', ['page' => $nextPage]) }}" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
+            <a href="{{ route('games.all', array_merge(['page' => $nextPage], request()->only(['genres', 'dates', 'ordering']))) }}" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
                 Page suivante &rarr;
             </a>
             @else
