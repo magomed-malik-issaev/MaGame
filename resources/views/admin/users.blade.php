@@ -30,7 +30,11 @@
                                 @foreach($users as $user)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">{{ $user->name }}</div>
+                                        <div class="text-sm font-medium text-gray-900">
+                                            <a href="{{ route('profile.show', $user->id) }}" class="text-indigo-600 hover:text-indigo-900">
+                                                {{ $user->name }}
+                                            </a>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ $user->email }}</div>

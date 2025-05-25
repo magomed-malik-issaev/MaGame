@@ -24,6 +24,16 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'avatar',
+        'bio',
+        'birth_date',
+        'location',
+        'favorite_platform',
+        'discord_username',
+        'psn_username',
+        'xbox_username',
+        'steam_username',
+        'nintendo_username',
     ];
 
     /**

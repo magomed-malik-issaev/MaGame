@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('games.all')" :active="request()->routeIs('games.all')">
                         {{ __('Tous les jeux') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('Communauté') }}
+                    </x-nav-link>
                     @auth
                     <x-nav-link :href="route('games.myGames')" :active="request()->routeIs('games.myGames')">
                         {{ __('Ma collection') }}
@@ -89,6 +92,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('games.all')" :active="request()->routeIs('games.all')">
                 {{ __('Tous les jeux') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                {{ __('Communauté') }}
             </x-responsive-nav-link>
             @auth
             <x-responsive-nav-link :href="route('games.myGames')" :active="request()->routeIs('games.myGames')">

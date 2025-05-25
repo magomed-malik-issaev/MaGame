@@ -102,7 +102,11 @@ class CommentController extends BaseController
         return response()->json([
             'success' => true,
             'message' => 'Commentaire ajouté avec succès',
-            'comment' => $comment,
+            'comment' => [
+                'id' => $comment->id,
+                'content' => $comment->content,
+                'user_id' => $comment->user_id
+            ],
             'user' => [
                 'name' => $comment->user->name,
                 'isAdmin' => $comment->user->isAdmin()

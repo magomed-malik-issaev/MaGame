@@ -100,7 +100,11 @@
                     <div id="comment-{{ $comment->id }}" class="comment-item bg-gray-700 rounded-lg p-4">
                         <div class="flex justify-between items-start mb-2">
                             <div class="flex items-center">
-                                <div class="font-medium text-white">{{ $comment->user->name }}</div>
+                                <div class="font-medium text-white">
+                                    <a href="{{ route('profile.show', $comment->user_id) }}" class="hover:text-purple-400">
+                                        {{ $comment->user->name }}
+                                    </a>
+                                </div>
                                 @if($comment->user->isAdmin())
                                 <span class="ml-2 px-2 py-0.5 bg-red-600 text-white text-xs font-medium rounded-full">Admin</span>
                                 @endif

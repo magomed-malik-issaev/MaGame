@@ -140,5 +140,56 @@
             @endforeach
         </div>
     </div>
+
+    <!-- Section Communauté -->
+    <div class="mb-12">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-white">Rejoignez la communauté</h2>
+            <a href="{{ route('users.index') }}" class="text-purple-400 hover:text-purple-300 text-sm">Voir tous les utilisateurs</a>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="md:w-2/3">
+                    <h3 class="text-xl font-bold text-white mb-2">Découvrez d'autres joueurs</h3>
+                    <p class="text-gray-300 mb-4">Explorez les collections de jeux d'autres joueurs, découvrez leurs favoris et partagez votre passion pour les jeux vidéo avec notre communauté.</p>
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <a href="{{ route('users.index') }}" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-md transition-colors">
+                            Explorer la communauté
+                        </a>
+                        @guest
+                        <a href="{{ route('register') }}" class="bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-md transition-colors">
+                            Créer un compte
+                        </a>
+                        @endguest
+                    </div>
+                </div>
+                <div class="md:w-1/3 flex justify-center">
+                    <div class="relative w-48 h-48">
+                        <div class="absolute -left-4 top-0 w-20 h-20 rounded-full bg-gray-700 border-2 border-gray-800 overflow-hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="absolute left-12 -top-4 w-24 h-24 rounded-full bg-gray-700 border-2 border-gray-800 overflow-hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="absolute right-0 top-6 w-22 h-22 rounded-full bg-gray-700 border-2 border-gray-800 overflow-hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="absolute left-4 bottom-0 w-20 h-20 rounded-full bg-gray-700 border-2 border-gray-800 overflow-hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-full w-full text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

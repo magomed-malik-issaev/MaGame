@@ -5,6 +5,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route d'accueil - liste des jeux
@@ -15,6 +16,9 @@ Route::get('/games', [GameController::class, 'index'])->name('games.index');
 Route::get('/games/all', [GameController::class, 'allGames'])->name('games.all');
 Route::get('/games/search', [GameController::class, 'search'])->name('games.search');
 Route::get('/games/{id}', [GameController::class, 'show'])->name('games.show');
+
+// Liste des utilisateurs
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
 // Routes protégées par l'authentification
 Route::middleware('auth')->group(function () {
@@ -44,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Profil public
+    Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 
     // Ma collection de jeux
     Route::get('/my-games', [GameController::class, 'myGames'])->name('games.myGames');

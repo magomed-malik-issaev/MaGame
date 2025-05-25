@@ -289,7 +289,11 @@ document.addEventListener('DOMContentLoaded', function () {
         commentElement.innerHTML = `
             <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center">
-                    <div class="font-medium text-white">${data.user.name}</div>
+                    <div class="font-medium text-white">
+                        <a href="/profile/${data.comment.user_id}" class="hover:text-purple-400">
+                            ${data.user.name}
+                        </a>
+                    </div>
                     ${adminBadge}
                     <span class="text-xs text-gray-400 ml-2">${data.created_at_formatted}</span>
                 </div>
